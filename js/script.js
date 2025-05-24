@@ -374,7 +374,7 @@ function createRadarBackgroundPlugin(fillColor = 'rgba(212, 213, 205, 1)') {
 function createCenteredPointLabelsPlugin(options = {}) {
     const {
         fontSize = 12,
-        fontFamily = 'Roboto', 'sans-serif',
+        fontFamily = 'Roboto',
         fontColor = '#444',
         offset = 20,
         lineHeight = 16
