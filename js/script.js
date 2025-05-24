@@ -184,7 +184,7 @@ ${filteredParams.map((p, i) => `
 
         if (!pluginsRegistered) {
             Chart.register(createRadarBackgroundPlugin('rgba(212, 213, 205, 1)'));
-            Chart.register(createCenteredPointLabelsPlugin({ fontSize: 16, offset: 24 }));
+            Chart.register(createCenteredPointLabelsPlugin({ fontSize: 22, offset: 24 }));
             pluginsRegistered = true;
         }
 
@@ -373,7 +373,7 @@ function createRadarBackgroundPlugin(fillColor = 'rgba(212, 213, 205, 1)') {
  */
 function createCenteredPointLabelsPlugin(options = {}) {
     const {
-        fontSize = 12,
+        fontSize = 22,
         fontFamily = 'sans-serif',
         fontColor = '#444',
         offset = 20,
