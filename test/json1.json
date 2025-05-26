@@ -1,0 +1,61 @@
+{
+  "kind": "character",
+  "data": {
+    "name": "óLê≤êÏ ‰ªâõ (Ç†ÇËÇ∑Ç©ÇÌ ÇËÇ®)",
+    "initiative": 13,
+    "externalUrl": "https://iachara.com/view/11636270",
+    "iconUrl": "https://image.iaproject.app/92e0386e-0e72-4544-8316-6cc0e1a57a4a",
+    "commands": "1d100<={SAN} Åyê≥ãCìxÉçÅ[ÉãÅz\nCCB<=75 ÅyÉAÉCÉfÉAÅz\nCCB<=70 ÅyçKâ^Åz\nCCB<=70 ÅyíméØÅz\nCCB<=75 Åyñ⁄êØÅz\nCCB<=70 Åyï∑Ç´é®Åz\nCCB<=70 Åyê}èëäŸÅz\nCCB<=46 ÅyâÒîÅz\nCCB<=50 ÅyÇ±Ç‘ÇµÅiÉpÉìÉ`ÅjÅz\nCCB<=81 ÅyåÆäJÇØÅz\nCCB<=50 Åyã@äBèCóùÅz\nCCB<=70 Åyê‡ìæÅz\nCCB<=80 ÅyêSóùäwÅz\nCCB<=31 Åyê∂ï®äwÅz\n1d3+0 ÅyÉ_ÉÅÅ[ÉWîªíËÅz\n1d4+0 ÅyÉ_ÉÅÅ[ÉWîªíËÅz\n1d6+0 ÅyÉ_ÉÅÅ[ÉWîªíËÅz\nCCB<={STR}*5 ÅySTR Å~ 5Åz\nCCB<={CON}*5 ÅyCON Å~ 5Åz\nCCB<={POW}*5 ÅyPOW Å~ 5Åz\nCCB<={DEX}*5 ÅyDEX Å~ 5Åz\nCCB<={APP}*5 ÅyAPP Å~ 5Åz\nCCB<={SIZ}*5 ÅySIZ Å~ 5Åz\nCCB<={INT}*5 ÅyINT Å~ 5Åz\nCCB<={EDU}*5 ÅyEDU Å~ 5Åz\n",
+    "status": [
+      {
+        "label": "HP",
+        "value": 12,
+        "max": 12
+      },
+      {
+        "label": "MP",
+        "value": 14,
+        "max": 14
+      },
+      {
+        "label": "SAN",
+        "value": 70,
+        "max": 70
+      }
+    ],
+    "params": [
+      {
+        "label": "STR",
+        "value": "9"
+      },
+      {
+        "label": "CON",
+        "value": "12"
+      },
+      {
+        "label": "POW",
+        "value": "14"
+      },
+      {
+        "label": "DEX",
+        "value": "13"
+      },
+      {
+        "label": "APP",
+        "value": "13"
+      },
+      {
+        "label": "SIZ",
+        "value": "11"
+      },
+      {
+        "label": "INT",
+        "value": "15"
+      },
+      {
+        "label": "EDU",
+        "value": "14"
+      }
+    ]
+  }
+}
