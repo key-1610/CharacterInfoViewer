@@ -240,7 +240,7 @@ ${filteredParams.map((p, i) => `
                 datasets: [{
                     label: "",
                     data: paramValues,
-                    backgroundColor: "rgba(152, 153, 232, 0.7)",
+                    backgroundColor: "rgba(90, 92, 247, 0.5)",
                     borderWidth: 0,
                     pointBackgroundColor: "transparent"
                 }]
