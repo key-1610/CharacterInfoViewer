@@ -139,18 +139,18 @@ Webアプリを開発
 解析内容は以下だけ取得(character=characterなら続行)
 探索者名 = data.name
 コマンド一覧 = data.commands
-HP = data.status.HP
-MP = data.status.MP
-SAN = data.status.SAN
-STR = data.params.STR
-CON = data.params.CON
-POW = data.params.POW
-DEX = data.params.DEX
-APP = data.params.APP
-INT = data.params.INT
-EDU = data.params.EDU
-イニシアティブ = data.params.DEX
-ダメージボーナス = data.params.STR + data.params.SIZ
+HP = data.status内にある"HP"
+MP = data.status内にある"MP"
+SAN = data.status内にある"SAN"
+STR = data.params内にある"STR"
+CON = data.params内にある"CON"
+POW = data.params内にある"POW"
+DEX = data.params内にある"DEX"
+APP = data.params内にある"APP"
+INT = data.params内にある"INT"
+EDU = data.params内にある"EDU"
+イニシアティブ = data.params内にある"DEX"
+ダメージボーナス = data.params内にある"STR" + data.params内にある"SIZ"
 
 ②読み込んだ内容から初期値を設定する
 初期値リスト
@@ -227,18 +227,18 @@ EDU
 ４．コマンド一覧
 テーブルで表示
 項目①：タイプ
-　パラメータ・・・文字にステータスやパラメータ名（db除く）が入っているもの
-　取得技能・・・初期値リストより多い判定値の技能
-　初期値技能・・・初期値リストと同じ判定値の技能
+　パラメータ・・・コマンド内にHP,MP,SAN,STR,CON,POW,DEX,APP,INT,EDUが含まれているもの
+　技能(取得)・・・初期値リストより多い判定値の技能
+　技能(初期値)・・・初期値リストと同じ判定値の技能
 　その他・・・CCB以外のもの
 項目②：技能名
-　ダイスボットコマンドの「 」以降のテキスト
+　コマンドの" "以降のテキスト
 　　例：1D100<={SAN} 正気度ロール→正気度ロール
 　　　　CCB<=65 幸運→幸運
 　　　　1D4+{DB} 頭突き→頭突き
 　　　　CCB<={CON}*5 【CON × 5】・・・CON × 5
 項目③：判定値
-　ダイスボットの判定値部分
+　コマンドの" "前のテキスト
 　　例：1D100<={SAN} 正気度ロール→{SAN}
 　　　　CCB<=65 幸運→65
 　　　　1D4+{DB} 頭突き→1D4+{DB}
