@@ -19,14 +19,14 @@ let pluginsRegistered = false;
 let radarChart = null;  // ここで宣言しておく
 
 /**
- * テキストエリアからJSON文字列を取得し、パースして表示内容を生成・更新する関数。
- * - JSONは特定のフォーマット(character kindのデータ)であることを想定。
- * - 基本情報、ステータス、パラメータ、コマンド一覧の各セクションをHTMLに描画する。
- * - パラメータはレーダーチャートで可視化し、編集可能。
- * - コピー機能やフィルタリング、並び替えなどのUIも初期化する。
- *
- * @throws {SyntaxError} JSON.parse失敗時にスローされる
- */
+* テキストエリアからJSON文字列を取得し、パースして表示内容を生成・更新する関数。
+* - JSONは特定のフォーマット(character kindのデータ)であることを想定。
+* - 基本情報、ステータス、パラメータ、コマンド一覧の各セクションをHTMLに描画する。
+* - パラメータはレーダーチャートで可視化し、編集可能。
+* - コピー機能やフィルタリング、並び替えなどのUIも初期化する。
+*
+* @throws {SyntaxError} JSON.parse失敗時にスローされる
+*/
 function parseJson() {
     const input = document.getElementById("jsonInput").value;
     const output = document.getElementById("output");
@@ -50,11 +50,7 @@ function parseJson() {
 <div class="label">名前</div>
 <div class="value-container">
 <input type="text" id="charName" value="${name}" style="width: 400px;" />
-<button class="copy-btn" onclick="copyToClipboard('charName')">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-</svg>
-</button>
+<button class="copy-btn" onclick="copyToClipboard('charName')" title="コピー">${copyIconSvg()}</button>
 <div class="success-message" id="successMessage-charName">コピーしました</div>
 </div>
 </div>
@@ -62,11 +58,7 @@ function parseJson() {
 <div class="label">イニシアティブ</div>
 <div class="value-container">
 <input type="text" id="initiative" value="${initiative}"  style="width: 100px; text-align: right;" />
-<button class="copy-btn" onclick="copyToClipboard('initiative')">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-</svg>
-</button>
+<button class="copy-btn" onclick="copyToClipboard('initiative')" title="コピー">${copyIconSvg()}</button>
 <div class="success-message" id="successMessage-initiative">コピーしました</div>
 </div>
 </div>
@@ -79,11 +71,7 @@ function parseJson() {
 <div class="label">${s.label}</div>
 <div class="value-container">
 <input type="text" id="statusValue-${i}" value="${s.value}" style="width: 100px; text-align: right;" />
-<button class="copy-btn" onclick="copyToClipboard('statusValue-${i}')">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-</svg>
-</button>
+<button class="copy-btn" onclick="copyToClipboard('statusValue-${i}')" title="コピー">${copyIconSvg()}</button>
 <div class="success-message" id="successMessage-statusValue-${i}">コピーしました</div>
 </div>
 </div>
@@ -106,8 +94,7 @@ ${statusFieldsHtml}
         const filteredParams = Array.isArray(data.params) ? data.params.filter(p => !excludedLabels.includes(p.label)) : [];
         const paramLabels = filteredParams.map(p => p.label);
         const paramValues = filteredParams.map(p => p.value);
-
-        // paramsBlock修正：value部分をinputに変更
+        
         const paramsBlock = `
 <div class="section">
 <h2 style="display:flex; align-items:center; gap:10px;">
@@ -132,11 +119,7 @@ ${filteredParams.map((p, i) => `
 <div class="label">${p.label}</div>
 <div class="value-container">
 <input type="text" id="paramValue-${i}" value="${p.value}" style="width: 100px; text-align: right;" />
-<button class="copy-btn" onclick="copyToClipboard('paramValue-${i}')">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-</svg>
-</button>
+<button class="copy-btn" onclick="copyToClipboard('paramValue-${i}')" title="コピー">${copyIconSvg()}</button>
 <div class="success-message" id="successMessage-paramValue-${i}">コピーしました</div>
 </div>
 </div>`).join("")}
@@ -144,78 +127,79 @@ ${filteredParams.map((p, i) => `
 </div>
 </div>`;
 
-
         const commandsTableRows = parseCommandsToTable(data.commands, data.params);
         const commandsTableHtml = `
 <div class="section" style="margin-bottom:4em">
-  <h2 style="display:flex; align-items:center; gap:10px;">
-    コマンド一覧
-    <button class="copy-btn" id="copyCommandsAllBtn">一括コピー</button>
-    <div class="success-message" id="successMessage-copyCommandsAllBtn">コピーしました</div>
-  </h2>
+<h2 style="display:flex; align-items:center; gap:10px;">
+コマンド一覧
+<button class="copy-btn" id="copyCommandsAllBtn">一括コピー(名称+値)</button>
+<label class="toggle-switch">
+<input type="checkbox" id="toggleCommandCopyMode">
+<span class="slider"></span>
+</label>
+<div class="success-message" id="successMessage-copyCommandsAllBtn">コピーしました</div>
+</h2>
 <div id="commandFilters">
-  <div>
-    <label class="label">タイプ</label>
-    <select id="filterType">
-      <option value="">すべて</option>
-      <option value="技能">技能</option>
-      <option value="パラメータ">パラメータ</option>
-      <option value="その他">その他</option>
-    </select>
-  </div>
+<div class="field">
+<div class="label">タイプ</div>
+<div style="display: flex; align-items: center;">
+<select id="filterType">
+<option value="">すべて</option>
+<option value="技能">技能</option>
+<option value="パラメータ">パラメータ</option>
+<option value="その他">その他</option>
+</select>
+</div>
+</div>
+<div class="field">
+<div class="label">名称</div>
+<div style="display: flex; gap: 12px; align-items: center;">
+<input type="text" id="filterName" placeholder="名称を入力（あいまい）">
+<div style="display: flex; align-items: center;">
+<input type="checkbox" id="filterThreeMajorSkills">
+<label>三大探索技能のみ</label>
+</div>
+</div>
+</div>
+<div class="field">
+<div class="label">値</div>
+<div style="display: flex; gap: 12px; align-items: center;">
+<input type="number" id="filterValueMin" placeholder="下限" style="width:70px;">
+〜
+<input type="number" id="filterValueMax" placeholder="上限" style="width:70px;">
 
-  <div>
-    <label class="label">名称</label>
-    <input type="text" id="filterName" placeholder="名称を入力（あいまい）">
-  </div>
-
-  <div class="select-multiple">
-    <label class="label">値</label>
-    <select id="filterValue" multiple placeholder="値を選択してください">
-      <option value="~80">~80</option>
-      <option value="80~60">80~60</option>
-      <option value="60~40">60~40</option>
-      <option value="40~20">40~20</option>
-      <option value="20~1">20~1</option>
-      <option value="dice">ダイス</option>
-    </select>
-  </div>
-
-<div class="checkbox-toggle">
-  <input type="checkbox" id="filterThreeMajorSkills">
-  <label for="filterThreeMajorSkills">三大技能のみ</label>
+</div>
+</div>
+<div class="button-group">
+<button id="clearFiltersBtn" class="btn btn-no">クリア</button>
+</div>
 </div>
 
-  <button id="clearFiltersBtn" class="btn btn-no">クリア</button>
+<div id="commandsTableContainer">
+<table id="commandsTable" border="1" cellspacing="0" cellpadding="4" style="width: 100%; border-collapse: collapse; text-align: left;">
+<thead>
+<tr>
+<th data-sort="type" style="cursor:pointer;">タイプ　▲▼</th>
+<th data-sort="name" style="cursor:pointer;">名称　▲▼</th>
+<th data-sort="value" style="cursor:pointer;">値　▲▼</th>
+<th>コピー</th>
+</tr>
+</thead>
+<tbody>
+${commandsTableRows.map((row, i) => `
+<tr data-type="${row.type}">
+<td>${row.type}</td>
+<td>${row.name}</td>
+<td>${row.value}</td>
+<td>
+<button class="copy-btn" data-copy-text="${row.name}\t${row.value}" title="名称 + 値">${copyIconSvg()}</button>
+<button class="copy-btn-cmd" data-copy-text="${row.raw}" title="コマンド" >${playIconSvg()}</button>
+</td>
+</tr>
+`).join('')}
+</tbody>
+</table>
 </div>
-  <div id="commandsTableContainer">
-  <table id="commandsTable" border="1" cellspacing="0" cellpadding="4" style="width: 100%; border-collapse: collapse; text-align: left;">
-    <thead>
-      <tr>
-        <th data-sort="type" style="cursor:pointer;">タイプ ▲▼</th>
-        <th data-sort="name" style="cursor:pointer;">名称 ▲▼</th>
-        <th data-sort="value" style="cursor:pointer;">値 ▲▼</th>
-        <th>コピー</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${commandsTableRows.map((row, i) => `
-        <tr data-type="${row.type}">
-          <td>${row.type}</td>
-          <td>${row.name}</td>
-          <td>${row.value}</td>
-          <td>
-            <button class="copy-btn" data-copy-text="${row.raw}" title="行コピー">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-              </svg>
-            </button>
-          </td>
-        </tr>
-      `).join('')}
-    </tbody>
-  </table>
-  </div>
 </div>
 `;
 
@@ -224,7 +208,7 @@ ${filteredParams.map((p, i) => `
         setupCopyParamsTabBtn({ params: filteredParams });
         setupCopyStatusTabBtn({ status: filteredStatus });
         setupCommandsTable();
-        
+
         if (!pluginsRegistered) {
             Chart.register(createRadarBackgroundPlugin('rgba(212, 213, 205, 1)'));
             Chart.register(createCenteredPointLabelsPlugin());
@@ -289,30 +273,43 @@ ${filteredParams.map((p, i) => `
                 });
             }
         });
-        
+
     } catch (e) {
         output.innerHTML = `<p style="color:red;">❌ JSONの解析に失敗しました: ${e.message}</p>`;
+        throw e;
     }
 }
 
 /**
- * 入力フォームのJSONテキストエリアと出力表示エリアをクリアする。
- *
- * @returns {void}
- */
+* 入力フォームのJSONテキストエリアと出力表示エリアをクリアする。
+*
+* @returns {void}
+*/
 function clearInput() {
     document.getElementById("jsonInput").value = "";
     document.getElementById("output").innerHTML = "";
 }
 
+function copyIconSvg() {
+    return `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>`;
+}
+
+function playIconSvg() {
+    return `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+<path d="M8 5v14l11-7z"/>
+</svg>`;
+}
+
 /**
- * 指定した要素のテキストまたは入力値をクリップボードにコピーする。
- * コピー成功時には対応する成功メッセージ要素にクラスを付与して1秒間表示する。
- * コピー失敗時にはアラートを表示する。
- *
- * @param {string} elementId - コピー対象の要素のID。
- * @returns {void}
- */
+* 指定した要素のテキストまたは入力値をクリップボードにコピーする。
+* コピー成功時には対応する成功メッセージ要素にクラスを付与して1秒間表示する。
+* コピー失敗時にはアラートを表示する。
+*
+* @param {string} elementId - コピー対象の要素のID。
+* @returns {void}
+*/
 function copyToClipboard(elementId) {
     const el = document.getElementById(elementId);
     let text = "";
@@ -331,15 +328,15 @@ function copyToClipboard(elementId) {
 }
 
 /**
- * パラメータの一括コピー用ボタンとトグルスイッチをセットアップする。
- * トグルの状態に応じてコピー形式（行または列）を切り替え、
- * ボタンクリックでデータをクリップボードにコピーする機能を提供する。
- * コピー成功時には成功メッセージを1秒間表示する。
- *
- * @param {Object} data - コピー対象データのオブジェクト。
- * @param {Array<{label: string, value: string|number}>} data.params - コピーするパラメータの配列。
- * @returns {void}
- */
+* パラメータの一括コピー用ボタンとトグルスイッチをセットアップする。
+* トグルの状態に応じてコピー形式（行または列）を切り替え、
+* ボタンクリックでデータをクリップボードにコピーする機能を提供する。
+* コピー成功時には成功メッセージを1秒間表示する。
+*
+* @param {Object} data - コピー対象データのオブジェクト。
+* @param {Array<{label: string, value: string|number}>} data.params - コピーするパラメータの配列。
+* @returns {void}
+*/
 function setupCopyParamsTabBtn(data) {
     const btn = document.getElementById('copyParamsTabBtn');
     const toggle = document.getElementById('toggleCopyMode');
@@ -367,12 +364,12 @@ function setupCopyParamsTabBtn(data) {
 }
 
 /**
- * Chart.jsのレーダーチャート用の背景塗りつぶしプラグインを作成する。
- * レーダーチャートの外周ポリゴンを指定色で塗りつぶす。
- *
- * @param {string} [fillColor='rgba(212, 213, 205, 1)'] - 塗りつぶしの色（CSSカラー文字列）
- * @returns {Object} Chart.jsプラグインオブジェクト
- */
+* Chart.jsのレーダーチャート用の背景塗りつぶしプラグインを作成する。
+* レーダーチャートの外周ポリゴンを指定色で塗りつぶす。
+*
+* @param {string} [fillColor='rgba(212, 213, 205, 1)'] - 塗りつぶしの色（CSSカラー文字列）
+* @returns {Object} Chart.jsプラグインオブジェクト
+*/
 function createRadarBackgroundPlugin(fillColor = 'rgba(212, 213, 205, 1)') {
     return {
         id: 'radarBackgroundPlugin',
@@ -403,17 +400,17 @@ function createRadarBackgroundPlugin(fillColor = 'rgba(212, 213, 205, 1)') {
 }
 
 /**
- * Chart.jsのレーダーチャートで、各頂点のラベルと対応する値を
- * 頂点外側に中央揃えで描画するプラグインを作成する。
- *
- * @param {Object} [options={}] - カスタマイズ用オプション
- * @param {number} [options.fontSize=12] - フォントサイズ(px)
- * @param {string} [options.fontFamily='sans-serif'] - フォントファミリー
- * @param {string} [options.fontColor='#444'] - フォントカラー(CSSカラー値)
- * @param {number} [options.offset=20] - ラベルを頂点からどれだけ外側にずらすかの距離(px)
- * @param {number} [options.lineHeight=16] - ラベル間の縦方向の間隔(px)
- * @returns {Object} Chart.jsプラグインオブジェクト
- */
+* Chart.jsのレーダーチャートで、各頂点のラベルと対応する値を
+* 頂点外側に中央揃えで描画するプラグインを作成する。
+*
+* @param {Object} [options={}] - カスタマイズ用オプション
+* @param {number} [options.fontSize=12] - フォントサイズ(px)
+* @param {string} [options.fontFamily='sans-serif'] - フォントファミリー
+* @param {string} [options.fontColor='#444'] - フォントカラー(CSSカラー値)
+* @param {number} [options.offset=20] - ラベルを頂点からどれだけ外側にずらすかの距離(px)
+* @param {number} [options.lineHeight=16] - ラベル間の縦方向の間隔(px)
+* @returns {Object} Chart.jsプラグインオブジェクト
+*/
 function createCenteredPointLabelsPlugin(options = {}) {
     const {
         fontSize = 22,
@@ -458,11 +455,11 @@ function createCenteredPointLabelsPlugin(options = {}) {
 }
 
 /**
- * レーダーチャートのキャンバス画像をPNG形式でダウンロードする。
- * ファイル名に使用できない記号は自動で置換される。
- *
- * @param {string} [name="キャラクター"] - ダウンロードファイル名のベースとなる文字列
- */
+* レーダーチャートのキャンバス画像をPNG形式でダウンロードする。
+* ファイル名に使用できない記号は自動で置換される。
+*
+* @param {string} [name="キャラクター"] - ダウンロードファイル名のベースとなる文字列
+*/
 function downloadRadarChartImage(name = "キャラクター") {
     const canvas = document.getElementById("paramRadarChart");
     if (!canvas) {
@@ -480,12 +477,12 @@ function downloadRadarChartImage(name = "キャラクター") {
 }
 
 /**
- * ステータスのコピー用ボタンとモード切替トグルをセットアップする関数。
- * 行コピーモードと列コピーモードを切り替えられ、入力値をリアルタイムで取得してクリップボードにコピーする。
- * 
- * @param {Object} data - ステータス情報を含むデータオブジェクト
- * @param {Array<{label: string, value: string|number}>} data.status - コピー対象のステータス配列
- */
+* ステータスのコピー用ボタンとモード切替トグルをセットアップする関数。
+* 行コピーモードと列コピーモードを切り替えられ、入力値をリアルタイムで取得してクリップボードにコピーする。
+* 
+* @param {Object} data - ステータス情報を含むデータオブジェクト
+* @param {Array<{label: string, value: string|number}>} data.status - コピー対象のステータス配列
+*/
 function setupCopyStatusTabBtn(data) {
     const btn = document.getElementById('copyStatusTabBtn');
     const toggle = document.getElementById('toggleStatusCopyMode');
@@ -527,12 +524,12 @@ function setupCopyStatusTabBtn(data) {
 }
 
 /**
- * パラメータ式を評価して数値に変換する関数
- * 例: "{STR}*5" → 11*5 → 55
- * @param {string} expr - 式文字列
- * @param {Array} params - パラメータ配列 [{label:'STR', value:11}, ...]
- * @returns {number|string} 計算結果 or 元文字列（計算失敗時）
- */
+* パラメータ式を評価して数値に変換する関数
+* 例: "{STR}*5" → 11*5 → 55
+* @param {string} expr - 式文字列
+* @param {Array} params - パラメータ配列 [{label:'STR', value:11}, ...]
+* @returns {number|string} 計算結果 or 元文字列（計算失敗時）
+*/
 function evalParamExpression(expr, params) {
     // {XXX} を対応するパラメータ値に置換
     const replaced = expr.replace(/\{(\w+)\}/g, (match, p1) => {
@@ -552,11 +549,11 @@ function evalParamExpression(expr, params) {
 }
 
 /**
- * コマンド一覧解析・テーブル化
- * @param {string} commandsText - コマンドテキスト（改行区切り）
- * @param {Array} params - パラメータ配列（例：[{label:"STR", value:"5"}, ...]）
- * @returns {Array} 解析結果のテーブルデータ配列
- */
+* コマンド一覧解析・テーブル化
+* @param {string} commandsText - コマンドテキスト（改行区切り）
+* @param {Array} params - パラメータ配列（例：[{label:"STR", value:"5"}, ...]）
+* @returns {Array} 解析結果のテーブルデータ配列
+*/
 function parseCommandsToTable(commandsText, params) {
     const lines = commandsText.split('\n');
     const sanCheckTag = '{SAN}';
@@ -652,19 +649,20 @@ function parseCommandsToTable(commandsText, params) {
 }
 
 /**
- * コマンド一覧テーブルに対して、フィルタ機能・ソート機能・コピー機能をセットアップする。
- * 
- * - フィルタ: 複数チェックボックスによる種類フィルタと三大技能のみ表示切替
- * - ソート: テーブルヘッダーのクリックで昇順・降順切替
- * - コピー: 各行のコピー・表示行全コピー機能
- * 
- * @returns {void}
- */
+* コマンド一覧テーブルに対して、フィルタ機能・ソート機能・コピー機能をセットアップする。
+* 
+* - フィルタ: 複数チェックボックスによる種類フィルタと三大技能のみ表示切替
+* - ソート: テーブルヘッダーのクリックで昇順・降順切替
+* - コピー: 各行のコピー・表示行全コピー機能
+* 
+* @returns {void}
+*/
 function setupCommandsTable() {
 
     const filterType = document.getElementById('filterType');
     const filterName = document.getElementById('filterName');
-    const filterValue = document.getElementById('filterValue');
+    const filterValueMin = document.getElementById('filterValueMin');
+    const filterValueMax = document.getElementById('filterValueMax');
     const filterThreeMajor = document.getElementById('filterThreeMajorSkills');
     const table = document.getElementById('commandsTable');
     if (!table) return;
@@ -679,35 +677,31 @@ function setupCommandsTable() {
         return threeMajorSkills.some(skill => name.includes(skill));
     }
 
-    function matchValueRange(val, selectedRanges) {
-        if (!selectedRanges.length) return true;
-
+    function matchValueRange(val, min, max, excludeDice) {
         const valStr = String(val).trim();
         const numeric = Number(valStr);
-        const isNumeric = !isNaN(numeric) && /^\d+$/.test(valStr); // ← ここがポイント
+        const isNumeric = !isNaN(numeric) && /^-?\d+(\.\d+)?$/.test(valStr);
 
         if (isNumeric) {
-            for (const range of selectedRanges) {
-                if (
-                    (range === '~80' && numeric > 80) ||
-                    (range === '80~60' && numeric <= 80 && numeric > 60) ||
-                    (range === '60~40' && numeric <= 60 && numeric > 40) ||
-                    (range === '40~20' && numeric <= 40 && numeric > 20) ||
-                    (range === '20~1' && numeric <= 20 && numeric >= 1)
-                ) return true;
-            }
-            return false;
+            if (min !== null && numeric < min) return false;
+            if (max !== null && numeric > max) return false;
+            return true;
         }
 
-        // 完全な数値でないものは「ダイス」とみなす
-        return selectedRanges.includes('dice');
+        // 数値でなければ（= ダイスなど）
+        return !excludeDice;
     }
 
     function filterRows() {
         const selectedType = filterType.value;
         const nameKeyword = filterName.value.trim().toLowerCase();
-        const selectedValueRanges = Array.from(filterValue.selectedOptions).map(opt => opt.value);
         const onlyThreeMajor = filterThreeMajor.checked;
+
+        const minVal = filterValueMin.value ? Number(filterValueMin.value) : null;
+        const maxVal = filterValueMax.value ? Number(filterValueMax.value) : null;
+
+        // 数値フィルタが使われている場合は、数値以外を除外する
+        const excludeDice = minVal !== null || maxVal !== null;
 
         allRows.forEach(row => {
             const type = row.getAttribute('data-type');
@@ -716,31 +710,23 @@ function setupCommandsTable() {
 
             let visible = true;
 
-            if (selectedType && selectedType !== type) {
-                visible = false;
-            }
-
-            if (nameKeyword && !name.toLowerCase().includes(nameKeyword)) {
-                visible = false;
-            }
-
-            if (!matchValueRange(value, selectedValueRanges)) {
-                visible = false;
-            }
-
-            if (onlyThreeMajor && !isThreeMajorSkill(name)) {
-                visible = false;
-            }
+            if (selectedType && selectedType !== type) visible = false;
+            if (nameKeyword && !name.toLowerCase().includes(nameKeyword)) visible = false;
+            if (!matchValueRange(value, minVal, maxVal, excludeDice)) visible = false;
+            if (onlyThreeMajor && !isThreeMajorSkill(name)) visible = false;
 
             row.style.display = visible ? '' : 'none';
         });
     }
-
+    
     // イベントバインド
-    [filterType, filterName, filterValue, filterThreeMajor].forEach(el => {
+    [
+        filterType, filterName, filterValueMin, filterValueMax,filterThreeMajor
+    ].forEach(el => {
         el.addEventListener('input', filterRows);
         el.addEventListener('change', filterRows);
     });
+
     document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
 
     // 以下は元のまま（ソート、コピー機能など）
@@ -803,8 +789,39 @@ function setupCommandsTable() {
         });
     });
 
+    table.querySelectorAll('button.copy-btn-cmd[data-copy-text]').forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            const text = btn.getAttribute('data-copy-text');
+            if (!text) return;
+
+            navigator.clipboard.writeText(text).then(() => {
+                let msg = btn.parentElement.querySelector('.success-message');
+                if (!msg) {
+                    msg = document.createElement('span');
+                    msg.className = 'success-message';
+                    msg.textContent = 'コピーしました';
+                    btn.parentElement.appendChild(msg);
+                }
+
+                msg.classList.add('visible');
+                setTimeout(() => msg.classList.remove('visible'), 1000);
+            }).catch(() => {
+                alert('コピーに失敗しました');
+            });
+        });
+    });
+
     const copyAllBtn = document.getElementById('copyCommandsAllBtn');
+    const toggle = document.getElementById('toggleCommandCopyMode');
     const msg = document.getElementById('successMessage-copyCommandsAllBtn');
+
+    if (!copyAllBtn || !toggle) return;
+    const updateButtonLabel = () => {
+        copyAllBtn.innerText = toggle.checked ? "一括コピー(コマンド)" : "一括コピー(名称 + 値)";
+    };
+
+    toggle.addEventListener('change', updateButtonLabel);
+    updateButtonLabel();
 
     if (copyAllBtn && msg) {
         copyAllBtn.addEventListener('click', () => {
@@ -814,8 +831,14 @@ function setupCommandsTable() {
 
             // 表示中の行のボタンからコピー用テキストを取得
             const lines = rows.map(row => {
-                const btn = row.querySelector('button.copy-btn');
+                let btn = row.querySelector('button.copy-btn');
+
+                if (toggle.checked) {
+                    btn = row.querySelector('button.copy-btn-cmd');
+                } 
+
                 return btn ? btn.getAttribute('data-copy-text') : '';
+
             }).filter(Boolean);
 
             const text = lines.join('\n');
@@ -834,13 +857,9 @@ function clearFilters() {
     document.getElementById('filterType').value = '';
     document.getElementById('filterName').value = '';
     document.getElementById('filterThreeMajorSkills').checked = false;
+    document.getElementById('filterValueMin').value = '';
+    document.getElementById('filterValueMax').value = '';
 
-    const valueSelect = document.getElementById('filterValue');
-    for (let i = 0; i < valueSelect.options.length; i++) {
-        valueSelect.options[i].selected = false;
-    }
-
-    // フィルター再適用（全件表示）
     const event = new Event('input');
     document.getElementById('filterType').dispatchEvent(event);
 }

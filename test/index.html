@@ -14,11 +14,15 @@
 <body>
     <div id="header-container"></div>
     <main>
-        <p>ココフォリア コマ（CoC6）のパラメータを表示できます</p>
-        <textarea id="jsonInput" placeholder="CoC6のキャラシをコマ出力して貼り付け"></textarea>
-        <div class="button-group">
-            <button class="btn btn-yes" onclick="parseJson()">表示する</button>
-            <button class="btn btn-no" onclick="clearInput()">クリア</button>
+        <div class="section">
+            <h2>入力フォーム</h2>
+            <div class="field">
+                <textarea id="jsonInput" placeholder="CoC6のキャラシをコマ出力して貼り付け"></textarea>
+                <div class="button-group">
+                    <button class="btn btn-yes" onclick="parseJson()">表示する</button>
+                    <button class="btn btn-no" onclick="clearInput()">クリア</button>
+                </div>
+            </div>
         </div>
         <div id="output" class="output"></div>
     </main>
