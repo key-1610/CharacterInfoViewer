@@ -1,4 +1,4 @@
-// キャラクターの初期スキル定義
+﻿// キャラクターの初期スキル定義
 const baseSkills = {
     'こぶし': 50,
     'キック': 25,
@@ -145,6 +145,7 @@ function parseJson() {
 
     const data = json.data;
     const name = data.name || "名前不明";
+    const url = data.externalUrl || null;
     const commands = data.commands?.split('\n') || [];
 
     const params = extractParams(data.params);
@@ -155,7 +156,7 @@ function parseJson() {
     const statusRow = buildLabelValueRow(statusLabels, status);
     const paramsRow = buildLabelValueRow(paramsLabels, params);
 
-    renderCharacterData(output, name, statusRow, paramsRow, commands);
+    renderCharacterData(output, name, url, statusRow, paramsRow, commands);
 
     const radarChart = generateChart(paramsLabels, params);
     setupParamsInputListeners(paramsRow, radarChart);
@@ -193,9 +194,9 @@ function buildLabelValueRow(labels, values) {
     return labels.map((label, i) => ({ label, value: values[i] }));
 }
 
-function renderCharacterData(container, name, statusRow, paramsRow, commands) {
+function renderCharacterData(container, name, url, statusRow, paramsRow, commands) {
     const html = [
-        generateBasicInfoHtml(name),
+        generateBasicInfoHtml(name, url),
         generateStatusHtml(statusRow),
         generateParamsHtml(paramsRow, name),
         generateCommandsHtml(commands)
@@ -248,7 +249,7 @@ function clearInput() {
 
     if (input) input.value = "";
     if (output) output.innerHTML = "";
-    
+
 }
 
 /**
@@ -329,13 +330,25 @@ function generateChart(labels, values) {
  * @param {string} name - キャラクター名
  * @returns {string} - HTML文字列
  */
-function generateBasicInfoHtml(name) {
+function generateBasicInfoHtml(name, url) {
+
+    let linkHtml = '';
+
+    if (url) {
+        linkHtml = `
+            <div>
+                <a href="${url}" class="custom-link" target="_blank" rel="noopener noreferrer"> ▶ キャラクターシートを開く</a>
+            </div>`;
+    }
+
     return `
 <div class="background-wrapper">
   <div class="section">
     <div class="section-header">
       <h2><i class="fas fa-user"></i>基本情報</h2>
-      <div class="section-ctrl"></div>
+      <div class="section-ctrl">
+        ${linkHtml}
+      </div>
     </div>
     <div class="section-body">
       <div class="section-body-fullwidth">
@@ -343,7 +356,7 @@ function generateBasicInfoHtml(name) {
           <div class="label">名前</div>
           <div class="value-container">
             <input type="text" class="text-language" id="charName" value="${escapeHtml(name)}"/>
-            <button class="copy-btn" onclick="copyToClipboard('charName')" title="コピー">
+            <button class="copy-btn" onclick="copyToClipboard('charName','名前をコピーしました')" title="コピー">
               ${getCopyIconSvg()}
             </button>
           </div>
@@ -366,7 +379,7 @@ function generateStatusHtml(row) {
         <div class="label">${escapeHtml(s.label)}</div>
         <div class="value-container">
           <input type="text" class="text-nummber" id="statusValue-${i}" value="${escapeHtml(s.value)}"/>
-          <button class="copy-btn" onclick="copyToClipboard('statusValue-${i}')" title="コピー">
+          <button class="copy-btn" onclick="copyToClipboard('statusValue-${i}','値をコピーしました')" title="コピー">
             ${getCopyIconSvg()}
           </button>
         </div>
@@ -408,7 +421,7 @@ function generateParamsHtml(row, name) {
         <div class="label">${escapeHtml(s.label)}</div>
         <div class="value-container">
           <input type="text" class="text-nummber" id="paramsValue-${i}" value="${escapeHtml(s.value)}" />
-          <button class="copy-btn" onclick="copyToClipboard('paramsValue-${i}')" title="コピー">
+          <button class="copy-btn" onclick="copyToClipboard('paramsValue-${i}', '値をコピーしました')" title="コピー">
             ${getCopyIconSvg()}
           </button>
         </div>
@@ -704,7 +717,7 @@ function setupCommandsTable() {
         filterName.addEventListener('input', () => {
             const selectedValue = filterName.value;
             const options = Array.from(datalist.options).map(opt => opt.value);
-            
+
             if (options.includes(selectedValue)) {
                 setTimeout(() => {
                     filterName.blur();
@@ -771,9 +784,9 @@ function setupCommandsTable() {
         });
     }
 
-    setupCopyButtons('button.copy-btn[data-copy-text]', 'コピーしました');
-    setupCopyButtons('button.copy-btn-label[data-copy-text]', 'コピーしました');
-    setupCopyButtons('button.copy-btn-cmd[data-copy-text]', 'コピーしました');
+    setupCopyButtons('button.copy-btn[data-copy-text]', '「技能名：判定値」をコピーしました');
+    setupCopyButtons('button.copy-btn-label[data-copy-text]', '「技能名」をコピーしました');
+    setupCopyButtons('button.copy-btn-cmd[data-copy-text]', '「コマンド」をコピーしました');
 
     // フィルターのinput/changeイベント
     [filterType, filterName, filterValueMin, filterValueMax, filterThreeMajor].forEach(el => {
@@ -946,15 +959,28 @@ function setupCopyTabBtn(data, btn, toggle, msg) {
     });
 }
 
-function copyToClipboard(elementId) {
+function copyToClipboard(elementId, label = "コピーしました") {
     const el = document.getElementById(elementId);
     if (!el) return;
 
     const text = ['INPUT', 'TEXTAREA'].includes(el.tagName) ? el.value : el.innerText;
 
     navigator.clipboard.writeText(text).then(() => {
-        showToast("コピーしました");
+        showToast(label);
     });
+}
+
+async function pasteFromClipboard(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById(elementId).value = text;
+    } catch (err) {
+        console.error('クリップボードからの読み取りに失敗しました:', err);
+    }
+
 }
 
 function updateFilterSummary() {
@@ -984,7 +1010,7 @@ function updateFilterSummary() {
 function updateSkillListDatalist() {
     const tbody = document.querySelector('#commandsTable tbody');
     const skillListDatalist = document.getElementById('skillList');
-    
+
     const skillNames = Array.from(tbody.querySelectorAll('tr'))
         .filter(row => row.style.display !== 'none')
         .map(row => row.cells[1].textContent.trim())
