@@ -1,11 +1,12 @@
-@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+﻿@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f9f9f9;
 }
 
 header {
-    color: #3a3f44;
+    color: #555;
     padding: 15px 20px;
     display: flex;
     align-items: center;
@@ -70,6 +71,22 @@ textarea {
         outline: none;
         border-color: #007BFF;
         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    }
+
+a.custom-link {
+    padding: 6px 10px;
+    margin: 10px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s ease;
+}
+
+    a.custom-link:hover,
+    a.custom-link:focus {
+        color: #0056b3;
+        text-decoration: underline;
+        outline: none;
     }
 
 input[type="text"],
@@ -139,8 +156,9 @@ select {
 }
 
 .section {
+    background-color: #fff;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    border: solid #eee;
     padding: 20px;
     max-width: 1200px;
     margin: auto;
