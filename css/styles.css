@@ -1,4 +1,4 @@
-﻿@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
@@ -11,6 +11,9 @@ header {
     align-items: center;
     border-bottom: 1px solid #ccc;
 }
+    header img {
+        vertical-align: middle;
+    }
 
 main {
     margin: 20px;
@@ -32,8 +35,16 @@ h1 {
 h2 {
     letter-spacing: normal;
     font-size: 20px;
-    color: #888;
+    color: #333;
 }
+
+    h2 i {
+        display: inline-block;
+        width: 1.5em;
+        text-align: center;
+        margin-right: 10px;
+        color: #555;
+    }
 
 h3 {
     letter-spacing: normal;
@@ -179,6 +190,15 @@ select {
 .button-group {
     margin: 10px 0px;
     text-align: right;
+}
+
+.button-group-with-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .btn {
@@ -466,4 +486,28 @@ select {
 
     #scrollTopBtn:hover {
         background-color: #555;
+    }
+
+
+.filter-summary {
+    padding: 6px 10px;
+    background-color: #e6f4ff;
+    color: #004a7c;
+    border-left: 4px solid #2196f3;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    white-space: nowrap;
+    flex-grow: 1;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+    .filter-summary.hidden {
+        visibility: hidden;
+        opacity: 0;
     }
