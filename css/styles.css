@@ -139,8 +139,7 @@ select {
 }
 
 .section {
-    background-color: #fafafa;
-    border-radius: 5px;
+    bordor:solid 2px #ddd;
     padding: 20px;
     max-width: 1200px;
     margin: auto;
