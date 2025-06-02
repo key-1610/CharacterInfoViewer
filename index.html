@@ -1,6 +1,5 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
@@ -12,7 +11,6 @@
     <link rel="stylesheet" href="css/styles.css">
 
 </head>
-
 <body>
     <div class="toast" id="toast"></div>
     <div id="header-container"></div>
@@ -28,7 +26,6 @@
                     <div class="section-body">
                         <div class="section-body-fullwidth">
                             <div class="field">
-                                <div class="label">データ</div>
                                 <textarea id="jsonInput" placeholder="CoC6のキャラシをコマ出力して貼り付け"></textarea>
                             </div>
                         </div>
@@ -37,7 +34,6 @@
                         <div class="field">
                             <div class="button-group">
                                 <button class="btn btn-large btn-yes" onclick="parseJson()">表示する</button>
-                                <button class="btn btn-large btn-yes" onclick="copyToClipboard('jsonInput')">再コピー</button>
                                 <button class="btn btn-large btn-no" onclick="clearInput()">クリア</button>
                             </div>
                         </div>
@@ -47,10 +43,8 @@
         </div>
         <div id="output" class="output-block">
         </div>
-        <button onclick="scrollToTop()" id="scrollTopBtn">↑ TOP</button>
     </main>
     <div id="footer-container"></div>
     <script src="js/main.js"></script>
 </body>
-
 </html>
