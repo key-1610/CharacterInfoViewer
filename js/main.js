@@ -1,4 +1,4 @@
-﻿// キャラクターの初期スキル定義
+// キャラクターの初期スキル定義
 const baseSkills = {
     'こぶし': 50,
     'キック': 25,
@@ -25,6 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ["header", "footer"].forEach(section =>
         loadComponent(`components/${section}.html`, `${section}-container`)
     );
+
     const btn = document.getElementById("scrollTopBtn");
     window.onscroll = function () {
         if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
@@ -33,10 +34,6 @@ window.addEventListener("DOMContentLoaded", () => {
             btn.style.display = "none";
         }
     };
-    
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 });
 
 // トップにスクロールする関数
@@ -129,7 +126,7 @@ function getPlayIconSvg() {
 }
 
 function parseJson() {
-    const input = document.getElementById('jsonInput').value;
+    const input = document.getElementById('txtJsonInput').value;
     const output = document.getElementById('output');
     output.innerHTML = '';
 
@@ -246,11 +243,12 @@ function setupCopyTabButtons(statusRow, paramsRow) {
  * 入力欄と出力結果をクリアする
  */
 function clearInput() {
-    const input = document.getElementById("jsonInput");
+    const input = document.getElementById("txtJsonInput");
     const output = document.getElementById("output");
 
     if (input) input.value = "";
     if (output) output.innerHTML = "";
+    
 }
 
 /**
@@ -336,7 +334,7 @@ function generateBasicInfoHtml(name) {
 <div class="background-wrapper">
   <div class="section">
     <div class="section-header">
-      <h2>基本情報</h2>
+      <h2><i class="fas fa-user"></i>基本情報</h2>
       <div class="section-ctrl"></div>
     </div>
     <div class="section-body">
@@ -379,7 +377,7 @@ function generateStatusHtml(row) {
 <div class="background-wrapper">
   <div class="section">
     <div class="section-header">
-      <h2>ステータス</h2>
+      <h2><i class="fas fa-heartbeat"></i> ステータス</h2>
       <div class="section-ctrl">
         <button class="copy-btn copy-btn-long" id="copyStatusTabBtn">一括コピー(列)</button>
         <label class="toggle-switch">
@@ -421,7 +419,7 @@ function generateParamsHtml(row, name) {
 <div class="background-wrapper">
   <div class="section">
     <div class="section-header">
-      <h2>パラメータ</h2>
+      <h2><i class="fas fa-chart-area"></i>パラメータ</h2>
       <div class="section-ctrl">
         <button class="copy-btn" id="copyParamsTabBtn">一括コピー(列)</button>
         <label class="toggle-switch">
@@ -461,7 +459,7 @@ function generateCommandsHtml(commands) {
 <div class="background-wrapper">
   <div class="section">
     <div class="section-header">
-      <h2>コマンド一覧</h2>
+      <h2><i class="fas fa-list-alt"></i>コマンド一覧</h2>
       <div class="section-ctrl">
         <button class="copy-btn" id="copyCommandsAllBtn">一括コピー(技能名：判定値)</button>
         <label class="toggle-switch">
@@ -487,7 +485,8 @@ function generateCommandsHtml(commands) {
         <div class="field">
           <div class="label">技能名</div>
           <div class="value-container">
-            <input type="text" class="text-language" id="filterName" placeholder="技能名を入力（あいまい）" />
+            <input type="text" class="text-language" id="filterName" list="skillList" placeholder="技能名を入力（あいまい）" />
+            <datalist id="skillList"></datalist>
             <div class="checkbox">
               <input type="checkbox" id="filterThreeMajorSkills" />
               <label for="filterThreeMajorSkills">三大探索技能のみ</label>
@@ -497,13 +496,14 @@ function generateCommandsHtml(commands) {
         <div class="field">
           <div class="label">判定値</div>
           <div class="value-container">
-            <input type="number" class="text-nummber" id="filterValueMin" placeholder="下限" />
+            <input type="number" class="text-nummber" id="filterValueMin" placeholder="下限" min="0" pattern="[0-9]*"/>
             〜
-            <input type="number" class="text-nummber" id="filterValueMax" placeholder="上限" />
+            <input type="number" class="text-nummber" id="filterValueMax" placeholder="上限" min="1" pattern="[0-9]*"/>
           </div>
         </div>
         <div class="field">
-          <div class="button-group">
+          <div class="button-group-with-summary">
+            <div id="filterSummary" class="filter-summary" aria-hidden="true"></div>
             <button id="clearFiltersBtn" class="btn btn-large btn-no">クリア</button>
           </div>
         </div>
@@ -696,6 +696,21 @@ function setupCommandsTable() {
 
             row.style.display = visible ? '' : 'none';
         });
+
+        updateSkillListDatalist();
+
+        const datalist = document.getElementById('skillList');
+
+        filterName.addEventListener('input', () => {
+            const selectedValue = filterName.value;
+            const options = Array.from(datalist.options).map(opt => opt.value);
+            
+            if (options.includes(selectedValue)) {
+                setTimeout(() => {
+                    filterName.blur();
+                }, 100);
+            }
+        });
     }
 
     // ソート処理
@@ -773,6 +788,7 @@ function setupCommandsTable() {
         filterValueMin.value = '';
         filterValueMax.value = '';
         filterThreeMajor.checked = false;
+        updateFilterSummary();
         filterRows();
     });
 
@@ -809,6 +825,12 @@ function setupCommandsTable() {
     // 初期フィルター＆ソート
     filterRows();
     sortTableByKey('value', false);
+
+    // 検索条件バッチ
+    ['filterType', 'filterName', 'filterThreeMajorSkills', 'filterValueMin', 'filterValueMax'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateFilterSummary);
+        document.getElementById(id).addEventListener('change', updateFilterSummary);
+    });
 }
 
 // 共通: トースト表示
@@ -818,21 +840,6 @@ function showToast(message, duration = 1000) {
     toast.textContent = message;
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), duration);
-}
-
-function clearFilters() {
-    const ids = ['filterType', 'filterName', 'filterValueMin', 'filterValueMax'];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-
-    const checkbox = document.getElementById('filterThreeMajorSkills');
-    if (checkbox) checkbox.checked = false;
-
-    const event = new Event('input');
-    const filterType = document.getElementById('filterType');
-    if (filterType) filterType.dispatchEvent(event);
 }
 
 function createRadarBackgroundPlugin(fillColor = 'rgba(212, 213, 205, 1)') {
@@ -947,5 +954,48 @@ function copyToClipboard(elementId) {
 
     navigator.clipboard.writeText(text).then(() => {
         showToast("コピーしました");
+    });
+}
+
+function updateFilterSummary() {
+    const type = document.getElementById('filterType').value;
+    const name = document.getElementById('filterName').value.trim();
+    const threeMajor = document.getElementById('filterThreeMajorSkills').checked;
+    const min = document.getElementById('filterValueMin').value;
+    const max = document.getElementById('filterValueMax').value;
+
+    const summaryBox = document.getElementById('filterSummary');
+    const summary = [];
+
+    if (type) summary.push(`[ タイプ：${type} ]`);
+    if (name) summary.push(`[ 技能名：${name} ]`);
+    if (threeMajor) summary.push(`[ 三大探索技能のみ ]`);
+    if (min || max) summary.push(`[ 判定値：${min || '0'}〜${max || ''} ]`);
+
+    if (summary.length) {
+        summaryBox.textContent = `現在の検索条件　${summary.join('　/　')}`;
+        summaryBox.classList.remove('hidden');
+    } else {
+        summaryBox.textContent = '';
+        summaryBox.classList.add('hidden');
+    }
+}
+
+function updateSkillListDatalist() {
+    const tbody = document.querySelector('#commandsTable tbody');
+    const skillListDatalist = document.getElementById('skillList');
+    
+    const skillNames = Array.from(tbody.querySelectorAll('tr'))
+        .filter(row => row.style.display !== 'none')
+        .map(row => row.cells[1].textContent.trim())
+        .filter(name => name.length > 0);
+
+    const uniqueSkillNames = [...new Set(skillNames)];
+
+    skillListDatalist.innerHTML = '';
+    uniqueSkillNames.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        skillListDatalist.appendChild(option);
     });
 }
