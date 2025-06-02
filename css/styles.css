@@ -139,7 +139,8 @@ select {
 }
 
 .section {
-    bordor:solid 4px #ddd;
+    border-radius: 5px;
+    border: solid #eee;
     padding: 20px;
     max-width: 1200px;
     margin: auto;
