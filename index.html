@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -36,8 +36,9 @@
                     <div class="section-footer">
                         <div class="field">
                             <div class="button-group">
+                                <button id="btnJsonPaste" class="btn btn-large btn-yes" onclick="pasteFromClipboard('txtJsonInput')">貼り付け</button>
+                                <!--<button id="btnJsonCopy" class="btn btn-large btn-yes" style="margin-right:40px;" onclick="copyToClipboard('txtJsonInput')">コピー</button>-->
                                 <button id="btnJsonParse" class="btn btn-large btn-yes" onclick="parseJson(); updateFilterSummary();">表示する</button>
-                                <button id="btnJsonCopy" class="btn btn-large btn-yes" onclick="copyToClipboard('txtJsonInput')">再コピー</button>
                                 <button id="btnJsonClear" class="btn btn-large btn-no" onclick="clearInput()">クリア</button>
                             </div>
                         </div>
