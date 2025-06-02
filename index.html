@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="css/styles.css">
 
 </head>
+
 <body>
     <div class="toast" id="toast"></div>
     <div id="header-container"></div>
@@ -19,22 +21,24 @@
             <div class="background-wrapper">
                 <div class="section">
                     <div class="section-header">
-                        <h2>入力フォーム</h2>
+                        <h2><i class="fas fa-pen-to-square"></i>入力フォーム</h2>
                         <div class="section-ctrl">
                         </div>
                     </div>
                     <div class="section-body">
                         <div class="section-body-fullwidth">
                             <div class="field">
-                                <textarea id="jsonInput" placeholder="CoC6のキャラシをコマ出力して貼り付け"></textarea>
+                                <div class="label">データ</div>
+                                <textarea id="txtJsonInput" placeholder="CoC6のキャラシをコマ出力して貼り付け"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="section-footer">
                         <div class="field">
                             <div class="button-group">
-                                <button class="btn btn-large btn-yes" onclick="parseJson()">表示する</button>
-                                <button class="btn btn-large btn-no" onclick="clearInput()">クリア</button>
+                                <button id="btnJsonParse" class="btn btn-large btn-yes" onclick="parseJson(); updateFilterSummary();">表示する</button>
+                                <button id="btnJsonCopy" class="btn btn-large btn-yes" onclick="copyToClipboard('txtJsonInput')">再コピー</button>
+                                <button id="btnJsonClear" class="btn btn-large btn-no" onclick="clearInput()">クリア</button>
                             </div>
                         </div>
                     </div>
@@ -43,8 +47,10 @@
         </div>
         <div id="output" class="output-block">
         </div>
+        <button onclick="scrollToTop()" id="scrollTopBtn">↑ TOP</button>
     </main>
     <div id="footer-container"></div>
     <script src="js/main.js"></script>
 </body>
+
 </html>
