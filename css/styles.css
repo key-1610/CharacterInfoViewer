@@ -139,7 +139,7 @@ select {
 }
 
 .section {
-    bordor:solid 2px #ddd;
+    bordor:solid 4px #ddd;
     padding: 20px;
     max-width: 1200px;
     margin: auto;
