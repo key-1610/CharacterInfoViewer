@@ -1,4 +1,4 @@
-﻿@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
@@ -6,14 +6,46 @@ body {
 }
 
 header {
-    color: #555;
-    padding: 15px 20px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #555;
+    padding: 10px 20px;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
     align-items: center;
     border-bottom: 1px solid #ccc;
 }
-    header img {
-        vertical-align: middle;
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #999;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid #999;
+}
+
+    .nav-link:hover {
+        color: #333;
+        border: 1px solid #333;
+    }
+
+    .nav-link.active {
+        background-color: #333;
+        border: 1px solid #333;
+        color: #fff;
     }
 
 main {
@@ -109,6 +141,16 @@ input[type="number"] {
         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
     }
 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 input[type="checkbox"] {
     -webkit-appearance: none;
     width: 20px;
@@ -130,7 +172,9 @@ input[type="checkbox"] {
             color: white;
             font-size: 14px;
             position: absolute;
-            top: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
 select {
@@ -250,11 +294,13 @@ select {
 .btn-yes:hover {
     color: white;
     background-color: #007BFF;
+    border: 1px solid #007BFF;
 }
 
 .btn-no:hover {
     color: white;
     background-color: #dc3545;
+    border: 1px solid #dc3545;
 }
 
 .copy-btn,
