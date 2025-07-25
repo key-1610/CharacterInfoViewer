@@ -3,8 +3,40 @@
         <img src="img/logo.png" alt="サイトアイコン" width="48" height="48" style="margin-right: 10px;">
         <h1 class="page-title">Character Info Viewer</h1>
     </div>
-    <nav class="header-nav">
-        <a href="index.html" class="nav-link" id="nav-coc6">CoC6版</a>
-        <a href="coc7.html" class="nav-link" id="nav-coc7">CoC7版</a>
-    </nav>
+    <div class="menu-button" id="menuToggle" aria-label="メニューを開く" role="button" tabindex="0">
+        <i class="fas fa-bars fa-2x"></i>
+    </div>
 </header>
+
+<div id="menuModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+        <div id="modalTitle" class="modal-title">Character Info Viewer</div>
+        <div id="modalDesc" class="modal-subtitle">メニュー</div>
+        <div class="menu-grid">
+
+            <a href="index.html" class="menu-list-button">
+                <div class="icon-wrapper">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>ホーム</span>
+            </a>
+
+            <a href="coc6.html" class="menu-list-button">
+                <div class="icon-wrapper">
+                    <i class="fas fa-book-open"></i>
+                    <span class="badge">6</span>
+                </div>
+                <span>CoC6版</span>
+            </a>
+
+            <a href="coc7.html" class="menu-list-button">
+                <div class="icon-wrapper">
+                    <i class="fas fa-book-open"></i>
+                    <span class="badge">7</span>
+                </div>
+                <span>CoC7版</span>
+            </a>
+
+        </div>
+    </div>
+</div>
