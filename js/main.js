@@ -24,44 +24,25 @@ function loadComponent(path, containerId) {
             container.innerHTML = html;
             
             if (containerId === "header-container") {
-                customizeHeaderTitle();
-                highlightCurrentNav();
+                initMenuModal();
             }
         })
         .catch(error => console.error(`Failed to load component from ${path}:`, error));
 }
 
-function customizeHeaderTitle() {
-    const titleElement = document.querySelector("#header-container .page-title");
-    if (!titleElement) return;
+function initMenuModal() {
+    const menuToggle = document.getElementById("menuToggle");
+    const menuModal = document.getElementById("menuModal");
 
-    const path = window.location.pathname;
-    const currentPage = path.substring(path.lastIndexOf("/") + 1);
+    if (!menuToggle || !menuModal) return;
 
-    if (currentPage === "" || currentPage === "index.html") {
-        titleElement.textContent = "Character Info Viewer - CoC6版";
-    } else if (currentPage === "coc7.html") {
-        titleElement.textContent = "Character Info Viewer - CoC7版";
-    } else {
-        titleElement.textContent = "Character Info Viewer";
-    }
-}
+    menuToggle.addEventListener("click", () => {
+        menuModal.style.display = "block";
+    });
 
-function highlightCurrentNav() {
-    const path = window.location.pathname;
-    const currentPage = path.substring(path.lastIndexOf("/") + 1);
-
-    const navMap = {
-        "": "nav-coc6",
-        "index.html": "nav-coc6",
-        "coc7.html": "nav-coc7"
-    };
-
-    const activeId = navMap[currentPage];
-    if (activeId) {
-        const activeLink = document.getElementById(activeId);
-        if (activeLink) {
-            activeLink.classList.add("active");
+    window.addEventListener("click", (event) => {
+        if (event.target === menuModal) {
+            menuModal.style.display = "none";
         }
-    }
+    });
 }
